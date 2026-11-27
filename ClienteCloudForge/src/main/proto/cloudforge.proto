@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package cloudforge;
+
+option java_multiple_files = true;
+option java_package = "com.mycompany.cloudforge";
+
+import "nomes.proto";   // reaproveita a mensagem Vazio
+
+service CloudForgeService {
+  rpc ExecutarTarefa(TarefaRequest) returns (TarefaResponse);
+  rpc ObterEstado(Vazio) returns (Estado);
+}
+
+enum TipoTarefa {
+  CALCULO = 0;              // fatorial de um número
+  PROCESSAMENTO_DADOS = 1;  // soma e média de uma lista
+  HASH = 2;                 // SHA-256 de um texto
+}
+
+message TarefaRequest {
+  TipoTarefa tipo = 1;
+  string entrada = 2;
+}
+
+message TarefaResponse {
+  int64 idTarefa = 1;     // número gerado pelo contador da instância
+  string instancia = 2;   // qual instância respondeu
+  string resultado = 3;
+}
+
+// Recurso compartilhado de UMA instância (cada processo tem o seu)
+message Estado {
+  string instancia = 1;
+  int64 totalProcessado = 2;
+  repeated string historico = 3;
+}

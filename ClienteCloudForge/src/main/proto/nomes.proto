@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package cloudforge;
+
+option java_multiple_files = true;
+option java_package = "com.mycompany.cloudforge";
+
+// Serviço de nomes: diz ONDE estão os servidores.
+service NomesService {
+  rpc Registrar(Instancia) returns (Resposta);
+  rpc Desregistrar(Instancia) returns (Resposta);
+  rpc Listar(Vazio) returns (ListaInstancias);
+}
+
+message Vazio {}
+
+message Instancia {
+  string id = 1;     // ex.: srv-50051
+  string host = 2;   // ex.: localhost
+  int32 porta = 3;   // ex.: 50051
+}
+
+message Resposta {
+  bool ok = 1;
+  string mensagem = 2;
+}
+
+message ListaInstancias {
+  repeated Instancia instancias = 1;
+}
